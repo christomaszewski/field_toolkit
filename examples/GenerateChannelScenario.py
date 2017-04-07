@@ -21,7 +21,7 @@ vMax = 3.0
 # Domain Description
 xOrigin = 0 #meters
 yOrigin = 0 #meters
-xDist = channelWidth #meters
+xDist = channelWidth #meters 
 yDist = 50 #meters
 
 # Build Field Extents from Domain Description

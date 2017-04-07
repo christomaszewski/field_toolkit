@@ -70,20 +70,6 @@ class VectorField(Field):
 		xGrid, yGrid = grid.mgrid
 		return self.sampleAtGrid(xGrid, yGrid)
 
-	def quiver(self, plot, grid):
-		""" Produces a quiver plot of the vector field on the grid provided
-
-			Expects a SampleGrid and a plot to call quiver on
-
-			Deprecated - Use Data Visualization Objects
-		"""
-		xGrid, yGrid = grid.mgrid
-		xSamples, ySamples = self.sampleAtGrid(xGrid, yGrid)
-		magnitude = np.sqrt(xSamples**2 + ySamples**2)
-		plot.quiver(xGrid, yGrid, xSamples, ySamples, magnitude, cmap=cm.jet)
-		plot.axis(self._bounds)
-		plot.grid()
-
 	def generateMeasurementsOnGrid(self, grid):
 		""" Return a list of tuples representing points and vectors at
 			those points on a grid
