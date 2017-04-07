@@ -1,4 +1,5 @@
 import dill
+import os
 
 from context import field_toolkit
 
@@ -6,13 +7,15 @@ import field_toolkit.core.fields as field_lib
 import field_toolkit.core.extents as field_extents
 import field_toolkit.viz.plotting as field_viz
 
-""" Script to generate a flow simulating a fully developed single channel flow
-	
-	Demonstrates creating a simple field object and plotting it with default settings
-"""
+
+# Make sure output directory exists
+outputDir = "../output/"
+if not os.path.exists(outputDir):
+	os.makedirs(outputDir)
 
 # Scenario Output filename
-fileName = "single_channel.scenario"
+scenarioName = "single_channel"
+fileName = outputDir + scenarioName + ".scenario"
 
 # Scenario Parameters
 channelWidth = 100
