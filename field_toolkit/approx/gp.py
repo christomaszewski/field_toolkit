@@ -37,6 +37,13 @@ class GPApproximator(VectorFieldApproximator):
 			print("No Measurements Available")
 			return None
 
+		if (fieldExtents is None):
+			print("No extents specified, building extents from measurements")
+			# Generate extents surrounding sample points
+			points = [m.point for m in self._measurements]
+			fieldExtents = core.extents.FieldExtents.from_contained_points(points)
+
+
 		X = []
 		vX = []
 		vY = []
@@ -59,8 +66,8 @@ class GPApproximator(VectorFieldApproximator):
 		meanFuncX = GPy.mappings.Constant(2, 1, np.mean(y1))
 		meanFuncY = GPy.mappings.Constant(2, 1, np.mean(y2))
 
-		self._gpModelX = GPy.models.GPRegression(x, y1, self._Kx, normalizer=True, mean_function=meanFuncX)
-		self._gpModelY = GPy.models.GPRegression(x, y2, self._Ky, normalizer=True, mean_function=meanFuncY)
+		self._gpModelX = GPy.models.GPRegression(x, y1, self._Kx, normalizer=False, mean_function=meanFuncX)
+		self._gpModelY = GPy.models.GPRegression(x, y2, self._Ky, normalizer=False, mean_function=meanFuncY)
 
 		#print(self._gpModelX)
 		#print(self._gpModelY)

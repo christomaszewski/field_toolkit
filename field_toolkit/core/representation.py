@@ -62,6 +62,10 @@ class VectorFieldRepresentation(FieldRepresentation):
 	def validExtents(self):
 		return self._validExtents
 
+	@validExtents.setter
+	def validExtents(self, newExtents):
+		self._validExtents = newExtents
+
 
 class CompoundVectorFieldRepresentation(FieldRepresentation):
 	"""Class implementation for  a vector field made up of a group of component

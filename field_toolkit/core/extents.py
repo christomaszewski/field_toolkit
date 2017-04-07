@@ -1,3 +1,5 @@
+import numpy as np
+
 from .base import Extents
 
 class FieldExtents(Extents):
@@ -30,8 +32,17 @@ class FieldExtents(Extents):
 		self._yMin, self._yMax = yRange
 
 	@classmethod
-	def from_list(cls, bounds):
+	def from_bounds_list(cls, bounds):
 		return cls(tuple(bounds[:2]), tuple(bounds[2:]))
+
+	@classmethod
+	def from_contained_points(cls, points):
+		# Creates extents that surround list of provided points
+		p = np.asarray(points)
+		xRange = (min(p[:,0]), max(p[:,0]))
+		yRange = (min(p[:,1]), max(p[:,1]))
+
+		return cls(xRange, yRange)
 
 	def contain(self, point):
 		x, y = point

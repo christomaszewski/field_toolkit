@@ -99,6 +99,10 @@ class VectorField(Field):
 	def extents(self):
 		return self._fieldRep.validExtents
 
+	@extents.setter
+	def extents(self, newExtents):
+		self._fieldRep.validExtents = newExtents
+
 	@property
 	def plotExtents(self):
 		fieldExtents = self._fieldRep.validExtents

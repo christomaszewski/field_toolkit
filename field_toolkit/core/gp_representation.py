@@ -2,9 +2,9 @@ import GPy
 import numpy as np
 
 from . import extents
-from .base import FieldRepresentation
+from .representation import VectorFieldRepresentation
 
-class GPVectorFieldRepresentation(FieldRepresentation):
+class GPVectorFieldRepresentation(VectorFieldRepresentation):
 
 	def __init__(self, xModel, yModel, fieldExtents, undefinedValue=(0,0)):
 		self._xComponentGPModel = xModel
@@ -29,14 +29,8 @@ class GPVectorFieldRepresentation(FieldRepresentation):
 
 		return (varX[0][0], varY[0][0])
 
-	def isDefinedAt(self, point):
-		return self._validExtents.contain(point)
 
-	@property
-	def validExtents(self):
-		return self._validExtents
-
-class CoregionalizedGPFieldRepresentation(FieldRepresentation):
+class CoregionalizedGPFieldRepresentation(VectorFieldRepresentation):
 
 	def __init__(self, model, fieldExtents, undefinedValue=(0,0)):
 		self._gpModel = model

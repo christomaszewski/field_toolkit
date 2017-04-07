@@ -28,7 +28,7 @@ xDist = channelWidth #meters
 yDist = 50 #meters
 
 # Build Field Extents from Domain Description
-domainExtents = field_extents.FieldExtents.from_list([xOrigin, xDist, yOrigin, yDist])
+domainExtents = field_extents.FieldExtents.from_bounds_list([xOrigin, xDist, yOrigin, yDist])
 
 channelFlowField = field_lib.DevelopedPipeFlowField(channelWidth, vMax, domainExtents)
 
