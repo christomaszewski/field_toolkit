@@ -4,6 +4,8 @@ import numpy as np
 from . import extents
 from .representation import VectorFieldRepresentation
 
+# Todo: Add GP Scalar Field Representation
+
 class GPVectorFieldRepresentation(VectorFieldRepresentation):
 
 	def __init__(self, xModel, yModel, fieldExtents, undefinedValue=(0,0)):
@@ -13,7 +15,6 @@ class GPVectorFieldRepresentation(VectorFieldRepresentation):
 		self._undefinedVal = undefinedValue
 
 	def __getitem__(self, index):
-		# Todo: add Memoization
 		testPoint = np.asarray([index])
 
 		muX, varX = self._xComponentGPModel.predict_noiseless(testPoint)
@@ -35,6 +36,7 @@ class CoregionalizedGPFieldRepresentation(VectorFieldRepresentation):
 	def __init__(self, model, fieldExtents, undefinedValue=(0,0)):
 		self._gpModel = model
 		self._validExtents = fieldExtents
+		self._undefinedVal = undefinedValue
 
 	def __getitem__(self, index):
 		x, y = index
@@ -47,10 +49,3 @@ class CoregionalizedGPFieldRepresentation(VectorFieldRepresentation):
 		muY, varY = self._gpModel.predict_noiseless(newInputY)
 		
 		return (muX[0][0], muY[0][0])
-
-	def isDefinedAt(self, point):
-		return self._validExtents.contain(point)
-
-	@property
-	def validExtents(self):
-		return self._validExtents	

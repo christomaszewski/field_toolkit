@@ -36,8 +36,6 @@ randomPoint = lambda : tuple(np.random.rand(2) * list(vfSource.extents.size))
 points = [randomPoint() for _ in np.arange(nSamples)]
 measurements = list(vfSource.measureAtPoints(points))
 
-print([m.vector for m in measurements])
-
 # Initialize GP Approximator
 vfApproximator = field_approx.gp.GPApproximator()
 

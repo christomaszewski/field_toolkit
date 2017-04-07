@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 import field_toolkit.core.fields as field_lib
-import field_toolkit.core.extents as field_extents
+import field_toolkit.core.extents.FieldExtents
 
 class VectorFieldTest(TestCase):
 
@@ -30,7 +30,7 @@ class VectorFieldTest(TestCase):
 		yDist = 50 #meters
 
 		# Build Field Extents from Domain Description
-		self._domainExtents = field_extents.FieldExtents.from_list([xOrigin, xDist, yOrigin, yDist])
+		self._domainExtents = FieldExtents.from_bounds_list([xOrigin, xDist, yOrigin, yDist])
 
 		self._vectorField = field_lib.DevelopedPipeFlowField(channelWidth, self._vMax, self._domainExtents)
 
