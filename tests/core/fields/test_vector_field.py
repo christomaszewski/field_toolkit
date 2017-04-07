@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 import field_toolkit.core.fields as field_lib
-import field_toolkit.core.extents.FieldExtents
+from field_toolkit.core.extents import FieldExtents
 
 class VectorFieldTest(TestCase):
 
