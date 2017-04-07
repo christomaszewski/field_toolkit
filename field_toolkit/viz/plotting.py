@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import cv2
 
 from ..core import primitives
 
@@ -162,7 +161,8 @@ class OverlayFieldView(object):
 
 	def updateImage(self, img):
 		# todo: remove reliance on cv2 here and thereby the entire module
-		self._img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+		#self._img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+		self._img = self._img[:, :, ::-1]
 		self._img = np.flipud(self._img)
 
 	def draw(self):
