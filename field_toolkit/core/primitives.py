@@ -56,7 +56,7 @@ class SampleGrid(object):
 
 	def __init__(self, xDistance, yDistance, xCellCount, yCellCount=None):
 		self._xDist = xDistance 							#meters
-		self._yDist = yDistance							#meters
+		self._yDist = yDistance								#meters
 		self._xCellCount = xCellCount						#cells
 
 		if (yCellCount is None):

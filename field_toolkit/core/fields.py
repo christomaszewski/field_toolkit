@@ -7,10 +7,7 @@ from .base import Field
 from .primitives import Measurement
 
 class VectorField(Field):
-	""" Object representing a vector field
-
-		This is being transitioned to a base class that should not be
-		instantiated! - Not true anymore?
+	""" Object representing a basic vector field		
 
 		Todo: Need to think about implementing changing extents
 
@@ -91,6 +88,16 @@ class VectorField(Field):
 	def measureAtPoints(self, points):
 		return map(self.measureAtPoint, points)
 
+	def randomMeasurements(self, nPoints=1):
+		""" Returns nPoints measuements at random points in the field within its 
+			valid extents (assumes corner in origin)
+		"""
+		randomPoint = lambda : tuple(np.random.rand(2) * list(self.extents.size))
+		points = [randomPoint() for _ in np.arange(nPoints)]
+		measurements = list(self.measureAtPoints(points))
+
+		return measurements
+
 	@property
 	def representation(self):
 		return self._fieldRep
@@ -103,6 +110,8 @@ class VectorField(Field):
 	def extents(self, newExtents):
 		self._fieldRep.validExtents = newExtents
 
+
+	# Is this still needed?
 	@property
 	def plotExtents(self):
 		fieldExtents = self._fieldRep.validExtents
@@ -122,6 +131,33 @@ class VectorField(Field):
 		# todo: appropriately combine vector fields
 		pass
 
+	@classmethod
+	def from_developed_pipe_flow_model(cls, cWidth, vMax, fieldExtents=None, offset=(0,0)):
+		""" Generator function to instatiate a vector field object according to the fully
+			developed pipe flow model. Replaces dedicated DevelopedPipeFlowField object.
+
+		Args:
+			cWidth (double): Width of channel for use in generating model (Meters)
+			vMax (double): Maximum velocity of flow (occurs in center) for use in model (m/s)
+			fieldExtents (Extents): Extents of vector field
+			offset (2-tuple): an offset for positioning the model within the domain (meters)
+		"""
+
+		# Extract field offsets
+		x0, y0 = offset
+
+		if (fieldExtents is None):
+			xRange = (x0, x0 + cWidth)
+			yRange = (y0, y0 + cWidth)
+			fieldExtents = extents.FieldExtents(xRange, yRange)
+
+		vfFunc = lambda x,y: (0,
+			((4 * (x - x0) / cWidth - 4 * (x - x0)**2 / cWidth**2) * vMax))
+
+
+		fieldRep = vf_rep.VectorFieldRepresentation(vfFunc, fieldExtents)
+
+		return cls(fieldRep)
 
 class UniformVectorField(VectorField):
 	""" Standard vector field representing uniform flow in given direction
@@ -143,8 +179,9 @@ class UniformVectorField(VectorField):
 
 class DevelopedPipeFlowField(VectorField):
 	""" Standard vector field representing fully developed pipe flow in channel
-	of specified width and specified max velocity
+		of specified width and specified max velocity
 
+		Deprecated in favor of new from_developed_pipe_flow_model classmethod
 	"""
 
 	def __init__(self, channelWidth, vMax, fieldExtents=None, offset=(0,0)):

@@ -3,10 +3,14 @@ import os
 
 from context import field_toolkit
 
-import field_toolkit.core.fields as field_lib
-import field_toolkit.core.extents as field_extents
+from field_toolkit.core.fields import VectorField
+from field_toolkit.core.extents import FieldExtents
 import field_toolkit.viz.plotting as field_viz
 
+""" Script to generate a flow simulating a fully developed channel flow
+	as may be found in an unobstructed river. Plots the scenario and 
+	saves it to a file in the output directory
+"""
 
 # Make sure output directory exists
 outputDir = "../output/"
@@ -18,8 +22,8 @@ scenarioName = "single_channel"
 fileName = outputDir + scenarioName + ".scenario"
 
 # Scenario Parameters
-channelWidth = 100
-vMax = 3.0
+channelWidth = 100 #meters
+vMax = 3.0 #m/s
 
 # Domain Description
 xOrigin = 0 #meters
@@ -28,12 +32,20 @@ xDist = channelWidth #meters
 yDist = 50 #meters
 
 # Build Field Extents from Domain Description
-domainExtents = field_extents.FieldExtents.from_bounds_list([xOrigin, xDist, yOrigin, yDist])
+domainExtents = FieldExtents.from_bounds_list([xOrigin, xDist, yOrigin, yDist])
 
-channelFlowField = field_lib.DevelopedPipeFlowField(channelWidth, vMax, domainExtents)
+# Build Vector Field from developed pipe flow model
+flowField = VectorField.from_developed_pipe_flow_model(channelWidth, vMax, domainExtents)
 
-fieldView = field_viz.SimpleFieldView(channelFlowField, pause=10, autoRefresh=True)
+# Dump field to scenario file
+with open(fileName, mode='wb') as f:
+	dill.dump(flowField, f)
+
+# Read in field from scenario file to demonstrate usage
+with open(fileName, mode='rb') as f:
+	loadedField = dill.load(f)
+
+# Plot field quiver and pause for 10 seconds
+fieldView = field_viz.SimpleFieldView(loadedField, pause=10, autoRefresh=True)
 fieldView.quiver()
 
-with open(fileName, mode='wb') as f:
-	dill.dump(channelFlowField, f)

@@ -1,9 +1,9 @@
 from unittest import TestCase
 
-from field_toolkit.core.fields import VectorField
+from field_toolkit.core.fields import UniformVectorField
 from field_toolkit.core.extents import FieldExtents
 
-class VectorFieldTest(TestCase):
+class UniformFieldTest(TestCase):
 
 	@classmethod
 	def setUpClass(cls):
@@ -20,30 +20,31 @@ class VectorFieldTest(TestCase):
 	# Internal Fixturing Methods 
 	def _constructVectorField(self):
 		# Scenario Parameters
-		channelWidth = 100
-		self._vMax = 3.0
+		self._vector = (3.0, -1.0)
 
 		# Domain Description
 		xOrigin = 0 #meters
 		yOrigin = 0 #meters
-		xDist = channelWidth #meters 
+		xDist = 100 #meters 
 		yDist = 50 #meters
 
 		# Build Field Extents from Domain Description
 		self._domainExtents = FieldExtents.from_bounds_list([xOrigin, xDist, yOrigin, yDist])
 
-		self._vectorField = VectorField.from_developed_pipe_flow_model(channelWidth, self._vMax, self._domainExtents)
+		self._vectorField = UniformVectorField(self._vector, self._domainExtents)
 
-	def test_vector_field_construction(self):
-		self.assertIsInstance(self._vectorField, VectorField)
+	def test_uniform_field_construction(self):
+		self.assertIsInstance(self._vectorField, UniformVectorField)
 
-	def test_vector_field_sampling(self):
+	def test_uniform_field_sampling(self):
 		xMin, xMax = self._domainExtents.xRange
 		yMin, yMax = self._domainExtents.yRange
 
 		xCenter = (xMin + xMax)/2
 		yCenter = (yMin + yMax)/2
 
-		# Sampling in middle of channel flow should be vMax
+		# Sample in the middle of the valid field extents
 		vX, vY = self._vectorField.sampleAtPoint((xCenter, yCenter))
-		self.assertAlmostEqual(self._vMax, vY)
+
+		self.assertAlmostEqual(self._vector[0], vX)
+		self.assertAlmostEqual(self._vector[1], vY)
