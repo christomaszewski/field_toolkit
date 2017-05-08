@@ -52,7 +52,7 @@ class PolynomialLSApproxmiator(VectorFieldApproximator):
 			else:
 				X = np.vstack((X, wi.transpose()))
 
-			vi = mi.vector
+			vi = mi.value
 			if(vx is None):
 				vx = vi[0]
 			else:

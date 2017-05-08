@@ -4,7 +4,7 @@ import pickle
 from . import representation as vf_rep
 from . import extents
 from .base import Field
-from .primitives import Measurement
+from primitives.measurement import Measurement
 
 class VectorField(Field):
 	""" Object representing a basic vector field		
@@ -62,7 +62,7 @@ class VectorField(Field):
 	def sampleGrid(self, grid):
 		""" Returns a sampling of vector field at each point in grid
 			
-			Expects a SampleGrid object
+			Expects a Grid object
 		"""
 		xGrid, yGrid = grid.mgrid
 		return self.sampleAtGrid(xGrid, yGrid)
@@ -89,7 +89,7 @@ class VectorField(Field):
 		return map(self.measureAtPoint, points)
 
 	def randomMeasurements(self, nPoints=1):
-		""" Returns nPoints measuements at random points in the field within its 
+		""" Returns nPoints measurements at random points in the field within its 
 			valid extents (assumes corner in origin)
 		"""
 		randomPoint = lambda : tuple(np.random.rand(2) * list(self.extents.size))

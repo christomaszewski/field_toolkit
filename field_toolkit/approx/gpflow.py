@@ -45,7 +45,7 @@ class GPFlowApproximator(VectorFieldApproximator):
 
 		for m in self._measurements:
 			X.append(m.point)
-			vel = m.vector
+			vel = m.value
 			vX.append((vel[0]))
 			vY.append((vel[1]))
 

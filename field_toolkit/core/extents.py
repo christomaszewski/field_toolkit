@@ -111,6 +111,10 @@ class FieldExtents(Extents):
 	def size(self):
 		return(self.xDist, self.yDist)
 
+	@property
+	def bounds(self):
+		return [self._xMin, self._xMax, self._yMin, self._yMax]
+
 class PiecewiseExtents(FieldExtents):
 	"""Class representing the valid extents of a 2D field defined as set of
 	component subextents. Does not consider the space between component extents

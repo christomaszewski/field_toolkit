@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ..core import primitives
+from primitives.grid import Grid
 
 plt.ion()
 
@@ -43,7 +43,7 @@ class SimpleFieldView(object):
 		if (self._field is None):
 			return
 		elif (self._grid is None):
-			self._grid = primitives.SampleGrid.from_extents(self._field.extents)
+			self._grid = Grid.from_bounds(self._field.extents.bounds)
 
 		self._fig.clf()
 		self._ax = self._fig.add_subplot(1,1,1)

@@ -68,7 +68,7 @@ class SampleGrid(object):
 
 		self._xCellWidth = xDistance / xCellCount			#meters
 		self._xCellHalfWidth = self._xCellWidth / 2.0		#meters
-		self._yCellWidth = yDistance / yCellCount			#meters
+		self._yCellWidth = yDistance / self._yCellCount			#meters
 		self._yCellHalfWidth = self._yCellWidth / 2.0		#meters
 
 		self._xGrid, self._yGrid = self.generateGrid()

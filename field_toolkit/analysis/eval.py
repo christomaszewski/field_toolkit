@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from .. import core
-from ..core import primitives
 
 class GridSampleEvaluator(object):
 
