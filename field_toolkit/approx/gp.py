@@ -258,9 +258,11 @@ class CoregionalizedGPApproximator(VectorFieldApproximator):
 		self._linearK = GPy.kern.Linear(input_dim=2, ARD=True)
 		
 		# Matern 3/2 Kernel
-		self._maternK = GPy.kern.Matern32(input_dim=2, ARD=True)
+		self._maternK = GPy.kern.Matern32(input_dim=2, ARD=True, lengthscale=50)
 		
-		kList = [self._biasK, self._maternK]
+		self._ratQuadK = GPy.kern.RatQuad(input_dim=2, ARD=True)
+
+		kList = [self._biasK, self._ratQuadK]
 
 		# Build Coregionalized
 		self._coregionalizedK = GPy.util.multioutput.LCM(input_dim=2, num_outputs=2, kernels_list=kList)
@@ -301,7 +303,7 @@ class CoregionalizedGPApproximator(VectorFieldApproximator):
 
 		# Coregionalization stuff
 		self._gpModel = GPy.models.GPCoregionalizedRegression([x, x], [y1, y2], self._coregionalizedK)
-		#print(self._gpModel)
+		print(self._gpModel)
 
 		self._gpModel.randomize()
 
@@ -309,16 +311,18 @@ class CoregionalizedGPApproximator(VectorFieldApproximator):
 		self._gpModel['.*ICM.*var'].unconstrain()
 		self._gpModel['.*ICM0.*var'].constrain_fixed(1.)
 		self._gpModel['.*ICM0.*W'].constrain_fixed(0)
-		self._gpModel['.*ICM1.*var'].constrain_fixed(1.)
-		self._gpModel['.*ICM1.*W'].constrain_fixed(0)
+		#self._gpModel['.*ICM1.*var'].constrain_fixed(1.)
+		#self._gpModel['.*ICM1.*W'].constrain_fixed(0)
 		#self._gpModel['.*ICM2.*var'].constrain_fixed(1.)
 
 
 		#print(self._gpModel)
 
-		self._gpModel.optimize_restarts(num_restarts=1, robust=True, max_iters=300, optimizer='lbfgsb')
-		self._gpModel.optimize_restarts(num_restarts=1, robust=True, max_iters=300, optimizer='scg')
-		#print(self._gpModel)
+		self._gpModel.optimize_restarts(num_restarts=1, robust=True, max_iters=1000, optimizer='lbfgsb')
+		self._gpModel.optimize_restarts(num_restarts=1, robust=True, max_iters=1000, optimizer='scg')
+		self._gpModel.optimize_restarts(num_restarts=1, robust=True, max_iters=100, optimizer='scg')
+
+		print(self._gpModel)
 		vfRep = core.gp_representation.CoregionalizedGPFieldRepresentation(self._gpModel, fieldExtents)
 
 		return core.fields.VectorField(vfRep)
