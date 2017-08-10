@@ -14,7 +14,7 @@ setup(
     keywords = "scalar vector field reconstruction",
     url = "https://github.com/christomaszewski/field_toolkit.git",
     packages=['field_toolkit', 'tests', 'examples'],
-    long_description=read('README'),
+    long_description=read('README.md'),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",
