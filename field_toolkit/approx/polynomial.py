@@ -1,9 +1,9 @@
 import numpy as np
 
 from .. import core
-from .base import VectorFieldApproximator
+from .base import FieldApproximator
 
-class PolynomialLSApproxmiator(VectorFieldApproximator):
+class PolynomialLSApproxmiator(FieldApproximator):
 
 	def __init__(self, polyDegree=2):
 		""" Estimates vector field with 2nd order polynomials by default

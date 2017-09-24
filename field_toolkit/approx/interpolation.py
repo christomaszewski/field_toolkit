@@ -1,6 +1,6 @@
-from .base import VectorFieldApproximator
+from .base import FieldApproximator
 
-class InterpolationBasedApproximator(VectorFieldApproximator):
+class InterpolationBasedApproximator(FieldApproximator):
 	
 	def __init__(self):
 		self._measurements = []

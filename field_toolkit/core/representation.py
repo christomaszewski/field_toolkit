@@ -1,7 +1,7 @@
 from . import extents
 from .base import FieldRepresentation
 
-class ScalarFieldRepresenation(FieldRepresentation):
+class ScalarFieldRepresentation(FieldRepresentation):
 	"""Specific class implementation for a 2D Scalar field for which a 
 	closed form solution is known
 
@@ -25,6 +25,10 @@ class ScalarFieldRepresenation(FieldRepresentation):
 	@property
 	def validExtents(self):
 		return self._validExtents
+
+	@validExtents.setter
+	def validExtents(self, newExtents):
+		self._validExtents = newExtents
 
 
 class VectorFieldRepresentation(FieldRepresentation):

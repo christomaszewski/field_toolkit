@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-class VectorFieldApproximator(metaclass=ABCMeta):
+class FieldApproximator(metaclass=ABCMeta):
 
 	@abstractmethod
 	def addMeasurement(self, measurement):
