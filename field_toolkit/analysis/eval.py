@@ -123,7 +123,7 @@ class GridSampleComparison(object):
 		if (not self._compute()):
 			return
 			
-		self._fig = plt.figure(figsize=(14, 10), dpi=100)
+		self._fig = plt.figure(figsize=(10,6), dpi=100)
 		self._ax = self._fig.add_subplot(1,1,1)
 		self._ax.set_title('Error Vectors')
 		xGrid, yGrid = self._grid.mgrid
@@ -133,9 +133,9 @@ class GridSampleComparison(object):
 						clim=clim, angles='xy', scale_units='xy', scale=1, cmap=plt.cm.jet)
 
 		self._ax.axis(self._source.plotExtents)
-		self._ax.minorticks_on()
-		self._ax.grid(which='both', alpha=1.0, linewidth=1)
-		self._ax.tick_params(which='both', direction='out')
+		#self._ax.minorticks_on()
+		#self._ax.grid(which='both', alpha=1.0, linewidth=1)
+		#self._ax.tick_params(which='both', direction='out')
 		c = self._fig.colorbar(self._q, ax=self._ax)
 		c.set_label('m/s')
 
@@ -143,7 +143,7 @@ class GridSampleComparison(object):
 		plt.pause(0.0001)
 
 	def save(self, fileName):
-		self._fig.savefig(fileName, bbox_inches='tight', dpi=100)
+		self._fig.savefig(fileName, bbox_inches='tight', dpi=300)
 
 	def _compute(self):
 		# Check if computation is possible
@@ -189,14 +189,28 @@ class GridSampleComparison(object):
 		if (self._xDiff is None or self._yDiff is None):
 			self._compute()
 
-		return (np.max(np.abs(self._xDiff)), np.max(np.abs(self._yDiff)))
+		mag = np.sqrt(self._squareDiffX + self._squareDiffY)
+
+		return (np.max(np.abs(self._xDiff)), np.max(np.abs(self._yDiff)), np.max(mag))
 
 	@property
 	def minError(self):
 		if (self._xDiff is None or self._yDiff is None):
 			self._compute()
 
-		return (np.min(np.abs(self._xDiff)), np.min(np.abs(self._yDiff)))
+		mag = np.sqrt(self._squareDiffX + self._squareDiffY)
+
+		return (np.min(np.abs(self._xDiff)), np.min(np.abs(self._yDiff)), np.min(mag))
+
+	@property
+	def medianError(self):
+		if (self._xDiff is None or self._yDiff is None):
+			self._compute()
+
+		mag = np.sqrt(self._squareDiffX + self._squareDiffY)
+
+		return (np.median(self._xDiff), np.median(self._yDiff), np.median(mag))
+
 
 	@property
 	def meanError(self):

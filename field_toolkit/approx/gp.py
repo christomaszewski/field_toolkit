@@ -45,7 +45,7 @@ class GPApproximator(FieldApproximator):
 	def clearMeasurements(self):
 		super().clearMeasurements()
 
-	def approximate(self, fieldExtents=None):
+	def approximate(self, fieldExtents=None, constrained=True):
 		if (len(self._measurements) < 1):
 			print("No Measurements Available")
 			return None
@@ -87,19 +87,20 @@ class GPApproximator(FieldApproximator):
 		self._gpModelX = GPy.models.GPRegression(x, y1, self._Kx, normalizer=True, mean_function=meanFuncX)
 		self._gpModelY = GPy.models.GPRegression(x, y2, self._Ky, normalizer=True, mean_function=meanFuncY)
 
-		print(self._gpModelX['.*lengthscale'])
-		print(self._gpModelY['.*lengthscale'])
+		if constrained:
+			print(self._gpModelX['.*lengthscale'])
+			print(self._gpModelY['.*lengthscale'])
 
-		self._gpModelX['.*Mat52.lengthscale'].constrain_bounded(1., 10000.)
-		self._gpModelX['.*Mat52_1.lengthscale'].constrain_bounded(1., 10000.)
-		self._gpModelX['.*RatQuad.lengthscale'].constrain_bounded(1., 100.)
+			self._gpModelX['.*Mat52.lengthscale'].constrain_bounded(1., 10000.)
+			self._gpModelX['.*Mat52_1.lengthscale'].constrain_bounded(1., 10000.)
+			self._gpModelX['.*RatQuad.lengthscale'].constrain_bounded(1., 100.)
 
-		self._gpModelY['.*Mat52.lengthscale'].constrain_bounded(1., 10000.)
-		self._gpModelY['.*Mat52_1.lengthscale'].constrain_bounded(200., 10000.)
-		self._gpModelY['.*RatQuad.lengthscale'].constrain_bounded(1., 100.)
+			self._gpModelY['.*Mat52.lengthscale'].constrain_bounded(1., 10000.)
+			self._gpModelY['.*Mat52_1.lengthscale'].constrain_bounded(200., 10000.)
+			self._gpModelY['.*RatQuad.lengthscale'].constrain_bounded(1., 100.)
 
-		print(self._gpModelX['.*lengthscale'])
-		print(self._gpModelY['.*lengthscale'])
+			print(self._gpModelX['.*lengthscale'])
+			print(self._gpModelY['.*lengthscale'])
 
 		#print(self._gpModelX)
 		#print(self._gpModelY)
@@ -115,9 +116,6 @@ class GPApproximator(FieldApproximator):
 		print(self._gpModelX)
 		print(self._gpModelY)
 
-
-		print(self._gpModelX['.*lengthscale'])
-		print(self._gpModelY['.*lengthscale'])
 		#self._gpModel.plot(fixed_inputs=[(1,0)],which_data_rows=slices[0],Y_metadata={'output_index':0})
 
 		vfRep = core.gp_representation.GPVectorFieldRepresentation(self._gpModelX, self._gpModelY, fieldExtents)

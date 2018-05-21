@@ -54,7 +54,7 @@ class ParticleDriftSimulator(object):
 
 		solution = odeint(f, y0, times)
 
-		print(solution)
+		#print(solution)
 
 		particleTrack = Track(solution, times)
 		return particleTrack
@@ -153,7 +153,7 @@ class ParticleDriftSimulator(object):
 		r = ode(f).set_integrator('dop853')
 		
 		particleVel = self._flowField.sampleAtPoint(tuple(particle))
-		print(f"Initial Particle Velocity: {particleVel}")
+		#print(f"Initial Particle Velocity: {particleVel}")
 
 		y0 = np.asarray(particle)
 		t0 = startTime

@@ -45,8 +45,8 @@ class DriftAnalysis(object):
 
 		velocity = v / t
 		"""
-		simTrack = self._sim.simulateWithMass(startPoint, velocity, mass, endTime, startTime)
-		#simTrack = self._sim.simulate(startPoint, endTime, startTime)
+		#simTrack = self._sim.simulateWithMass(startPoint, velocity, mass, endTime, startTime)
+		simTrack = self._sim.simulate(startPoint, endTime, startTime)
 		#simTrack = self._sim.simulateODEInt(startPoint, track.times)
 		#print(simTrack.times)
 		differences = []

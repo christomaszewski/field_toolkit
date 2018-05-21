@@ -202,10 +202,14 @@ class VectorField(Field):
 	def measureAtPoints(self, points):
 		return map(self.measureAtPoint, points)
 
-	def randomMeasurements(self, nPoints=1):
+	def randomMeasurements(self, nPoints=1, noiseFunc=None):
 		""" Returns nPoints measurements at random points in the field within its 
 			valid extents (assumes corner in origin)
 		"""
+
+		if noiseFunc is None:
+			noiseFunc = lambda : 0.0
+
 		randomPoint = lambda : tuple(np.random.rand(2) * list(self.extents.size))
 		points = [randomPoint() for _ in np.arange(nPoints)]
 		measurements = list(self.measureAtPoints(points))
@@ -293,7 +297,16 @@ class VectorField(Field):
 
 		return cls(fieldRep)
 
+	@classmethod
+	def from_linear_flow(cls, rates, bias, fieldExtents=None):
+		if (fieldExtents is None):
+			fieldExtents = extents.InfiniteExtents()
 
+		vfFunc = lambda x,y: (rates[0]*x + bias[0], rates[1]*y+bias[1])
+		fieldRep = vf_rep.VectorFieldRepresentation(vfFunc, fieldExtents)
+
+		return cls(fieldRep)
+		
 class UniformVectorField(VectorField):
 	""" Standard vector field representing uniform flow in given direction
 	with a given magnitude
